@@ -1,3 +1,5 @@
+require "./unified_diff"
+
 class Diff(A, B)
   VERSION = "1.0.0"
 
