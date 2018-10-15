@@ -1,4 +1,5 @@
 require "./diff"
+require "colorize"
 
 class Diff(A, B)
   def self.unified_diff(a, b, n = 3, newline = "\n")
@@ -20,8 +21,8 @@ class Diff(A, B)
         add_with_prefix ' ', prv.data.last(n), group
       end
 
-      prefix = cur.append? ? '+' : '-'
-      add_with_prefix prefix, cur.data, group
+      prefix = cur.append? ? '+'.colorize(:green).to_s : '-'.colorize(:red).to_s
+      add_with_prefix prefix, cur.data.map { |d| d.colorize(cur.append? ? :green : :red).to_s }, group
 
       if !group.last.ends_with?(newline)
         if cur.delete? ? cur.range_a.end == a.size : cur.range_b.end == b.size
@@ -59,7 +60,7 @@ class Diff(A, B)
 
   private def self.add_with_prefix(prefix, lines, to array)
     lines.each do |line|
-      array.push prefix + line
+      array.push prefix + line + "\n"
     end
   end
 
